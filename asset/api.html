@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>API</title>
+  <link href="./static/jsoneditor.css" media="all" rel="stylesheet" />
+  <style>
+    body {
+      background:#F5F5F5;
+      font:13px/1.5 Consolas,微软雅黑;
+    }
+    body, a, h1, h2 {
+      margin: 0;
+      padding: 0;
+    }
+    tbody > .jsoneditor-expandable:first-child {
+      display: none;
+    }
+    tr > .jsoneditor-tree:first-child {
+      width: 40px;
+    }
+    .jsoneditor-outer {
+      margin-left: -24px !important;
+    }
+    .jsoneditor-menu {
+      display: none;
+    }
+    .text-muted {
+      color: #aaa;
+    }
+    .deprecated,
+    .deprecated a,
+    .deprecated .jsoneditor-field,
+    .deprecated .jsoneditor-value {
+      text-decoration: line-through !important;
+
+    }
+    h2 {
+      padding: 10px 0;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #ccc;
+    }
+    h3 {
+      margin-bottom: 0;
+    }
+    a {
+      color:#666;line-height:1.5rem;vertical-align:middle;
+      display:inline-block;
+      -webkit-transition:all 160ms;transition:all 160ms;
+      text-decoration: none;
+    }
+    a:hover {
+      color:#333;font-weight:bold;text-shadow:0px 0px 3px #CCC;
+      -webkit-transform:scale(1.08);transform:scale(1.08);
+    }
+    .container {
+      margin: 10px;
+    }
+    .api-table {
+      text-align: left;
+      table-layout: fixed;
+      width: 100%;
+    }
+    .api-table td,th {
+      padding: 10px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #eee;
+      word-break: break-all;
+      min-width: 4rem;
+      vertical-align: top;
+
+    }
+    .api-table td.ellipsis {
+      overflow : hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+    }
+  </style>
+</head>
+<body>
+<div class="container" ng-controller="apiCtrl">
+  <h1>{{data.desc}}</h1>
+  <p>最后更新: {{data.lastModify | date:'yyyy-MM-dd HH:mm:ss'}} | <a target="_blank" href="/~m/download">下载api.config.js</a></p>
+
+  <div>
+    <h3>Http Status:</h3>
+    200 接口正常
+    <br/>401 认证有问题,前端会处理提示和跳转
+    <br/>400 提交参数有误,request body是错误信息
+    <br/>500 服务端发生错误,request body是错误信息
+  </div>
+
+  <div ng-repeat="group in data.groups">
+    <h2 id="{{group.name}}">{{group.name}}</h2>
+    <table class="api-table">
+      <tr>
+        <th width="30%">URL / 描述</th>
+        <th width="40%">请求</th>
+        <th width="40%">响应</th>
+        <!--<th width="5%">操作</th>-->
+      </tr>
+      <tr ng-repeat="item in group.data" id="{{data.prefix + item.url}}" ng-class="{'deprecated': item.deprecated}">
+        <td>
+          <a href="{{getExampleUrl(data.prefix + item.url)}}" target="_api">{{data.prefix + item.url}}</a>
+          <br/>
+          <span class="text-muted">
+            {{showMethod(item.method)}}
+            <br/>
+            {{item.desc}}
+          </span>
+
+        </td>
+        <td>
+          <div ng-if="item.forward">
+            Forward To: <a href="#{{data.prefix + item.forward}}">{{data.prefix + item.forward}}</a>
+          </div>
+          <div ng-if="!item.forward && item.req" class="editor" ng-jsoneditor options="tmp.options" ng-model="item.req"></div>
+          <div ng-if="!item.forward && !item.req" class="text-muted">N/A</div>
+        </td>
+        <td>
+          <div ng-if="!item.forward"  class="editor" ng-jsoneditor options="tmp.options" ng-model="item.res"></div>
+        </td>
+        <!--<td>[增删改]</td>-->
+      </tr>
+    </table>
+  </div>
+</div>
+<script src="./static/angular.min.js"></script>
+<script src="./static/jsoneditor.min.js"></script>
+<script src="./static/ng-jsoneditor.min.js"></script>
+<script>
+  var myApp = angular.module('MyApp', ['ng.jsoneditor']);
+  myApp.controller('apiCtrl', ['$scope', '$http', function($scope, $http) {
+    $scope.tmp = {
+      options: {mode: 'view', search: false}
+    };
+    $scope.getExampleUrl = function(url) {
+      return url.replace(/:[^\/]+/g, '*');
+    };
+    $scope.showMethod = function(method) {
+      return method instanceof Array ? method.join(' ') : method
+    };
+    $http.get('/~m/all').success(function(res) {
+      $scope.data = res;
+    });
+  }]);
+  angular.bootstrap(document, [myApp.name]);
+</script>
+</body>
+</html>

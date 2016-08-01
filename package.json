@@ -1,0 +1,21 @@
+{
+  "name": "mock-server",
+  "version": "0.0.1",
+  "description": "mock-server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "supervisor -w api.config.js -- server.js 2618",
+    "doc": "node ./build-doc.js"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "express": "^4.13.4",
+    "express-http-proxy": "^0.7.2",
+    "http-proxy-middleware": "^0.16.0",
+    "json2md": "^1.5.2",
+    "lodash": "^4.13.1",
+    "mockjs": "^1.0.1-beta2"
+  },
+  "dependencies": {}
+}
