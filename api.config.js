@@ -21,6 +21,7 @@ module.exports = {
               {
                 label: 'Featured Cards', // 分类名称
                 value: 1, // 分类唯一值,对应url
+                name: 'Featured-Cards',
                 title: 'Featured Cards', // 分类标题
                 trackId: 100,
                 children: []
@@ -29,10 +30,12 @@ module.exports = {
                 label: 'Travel',
                 value: 2,
                 title: 'Travel Credit Cards', // 分类标题
+                name: 'Travel',
                 children: [  // 二级子分类
                   {
                     label: 'Airline',
                     title: 'Airline Credit Cards',
+                    name: 'Airline',
                     value: 3,
                     trackId: 101,
                     children: []
@@ -40,6 +43,7 @@ module.exports = {
                   {
                     label: 'Hotel',
                     title: 'Hotel Credit Cards',
+                    name: 'Hotel',
                     value: 4,
                     trackId: 102,
                     children: []
@@ -47,6 +51,7 @@ module.exports = {
                   {
                     label: 'No Foreign Transaction Fee',
                     title: 'No Foreign Transaction Fee Credit Cards',
+                    name: 'Travel-No-Foreign-Transaction-Fee',
                     value: 5,
                     trackId: 103,
                     children: []
@@ -57,10 +62,12 @@ module.exports = {
                 label: 'Rewards',
                 value: 6,
                 title: 'Rewards Cards',
+                name: 'Rewards',
                 children: [
                   {
                     label: 'Rewards',
                     title: 'Rewards Credit Cards',
+                    name: 'Rewards-Cards',
                     value: 7,
                     trackId: 104,
                     children: []
@@ -68,6 +75,7 @@ module.exports = {
                   {
                     label: 'Cash Back',
                     title: 'Cash Back Credit Cards',
+                    name: 'Cash-Back',
                     value: 8,
                     trackId: 105,
                     children: []
@@ -75,6 +83,7 @@ module.exports = {
                   {
                     label: 'Points',
                     title: 'Points Credit Cards',
+                    name: 'Points',
                     value: 9,
                     trackId: 106,
                     children: []
@@ -82,6 +91,7 @@ module.exports = {
                   {
                     label: 'Gas',
                     title: 'Gas Credit Cards',
+                    name: 'Gas',
                     value: 10,
                     trackId: 107,
                     children: []
@@ -91,11 +101,13 @@ module.exports = {
               {
                 label: 'Low Fees',
                 title: 'Low Fees Credit Cards',
+                name: 'Low-Fees',
                 value: 11,
                 children: [
                   {
                     label: 'No Annual Fee',
                     title: 'No Annual Fee Credit Cards',
+                    name: 'No-Annual-Fee',
                     value: 12,
                     trackId: 108,
                     children: []
@@ -103,6 +115,7 @@ module.exports = {
                   {
                     label: 'No Foreign Transaction Fee',
                     title: 'No Foreign Transaction Fee Credit Cards',
+                    name: 'Low-Fees-No-Foreign-Transaction-Fee',
                     value: 13,
                     trackId: 109,
                     children: []
@@ -112,11 +125,13 @@ module.exports = {
               {
                 label: 'By Issuer',
                 title: 'By Issuer Credit Cards',
+                name: 'By-Issuer',
                 value: -2,
                 children: [
                   {
                     label: 'Visa',
                     title: 'Visa offers Credit Card Offers',
+                    name: 'Visa',
                     value: 101,
                     trackId: 110,
                     children: []
@@ -124,6 +139,7 @@ module.exports = {
                   {
                     label: 'MasterCard',
                     title: 'MasterCard Credit Card Offers',
+                    name: 'MasterCard',
                     value: 102,
                     trackId: 111,
                     children: []
@@ -131,6 +147,7 @@ module.exports = {
                   {
                     label: 'Citi',
                     title: 'Citi Credit Card Offers',
+                    name: 'Citi',
                     value: 103,
                     trackId: 112,
                     children: []
@@ -138,6 +155,7 @@ module.exports = {
                   {
                     label: 'Chase',
                     title: 'Chase Credit Card Offers',
+                    name: 'Chase',
                     value: 104,
                     trackId: 113,
                     children: []
@@ -145,6 +163,7 @@ module.exports = {
                   {
                     label: 'American Express',
                     title: 'American Express Credit Card Offers',
+                    name: 'American-Express',
                     value: 105,
                     trackId: 114,
                     children: []
@@ -152,6 +171,7 @@ module.exports = {
                   {
                     label: 'Discover',
                     title: 'Discover Credit Card Offers',
+                    name: 'Discover',
                     value: 106,
                     trackId: 115,
                     children: []
@@ -159,6 +179,7 @@ module.exports = {
                   {
                     label: 'Bank Of America',
                     title: 'Bank Of America Credit Card Offers',
+                    name: 'Bank-Of-America',
                     value: 107,
                     trackId: 116,
                     children: []
@@ -166,15 +187,9 @@ module.exports = {
                 ]
               },
               {
-                label: 'Student',
-                title: 'Student Credit Cards',
-                value: 14,
-                trackId: 120,
-                children: []
-              },
-              {
                 label: 'Small Business',
                 title: 'Small Business Credit Cards',
+                name: 'Small-Business',
                 value: 15,
                 trackId: 121,
                 children: []
@@ -182,11 +197,13 @@ module.exports = {
               {
                 label: 'Others',
                 title: 'Other Credit Cards',
+                name: 'Others',
                 value: 16,
                 children: [
                   {
                     label: 'Balance Transfer',
                     title: 'Balance Transfer',
+                    name: 'Balance-Transfer',
                     value: 17,
                     trackId: 122,
                     children: []
@@ -194,6 +211,7 @@ module.exports = {
                   {
                     label: '0% APR',
                     title: '0% APR',
+                    name: '0-APR',
                     value: 18,
                     trackId: 123,
                     children: []
@@ -201,6 +219,7 @@ module.exports = {
                   {
                     label: 'Low Interest',
                     title: 'Low Interest',
+                    name: 'Low-Interest',
                     value: 19,
                     trackId: 124,
                     children: []
@@ -208,8 +227,17 @@ module.exports = {
                   {
                     label: 'Bad, Limited, or No Credit History',
                     title: 'Bad, Limited, or No Credit History',
+                    name: 'Bad-Limited-or-No-Credit-History',
                     value: 20,
                     trackId: 125,
+                    children: []
+                  },
+                  {
+                    label: 'Student',
+                    title: 'Student Credit Cards',
+                    name: 'Student',
+                    value: 14,
+                    trackId: 120,
                     children: []
                   }
                 ]
@@ -218,6 +246,7 @@ module.exports = {
               {
                 label: 'Detail',
                 title: 'Detail',
+                name: 'Detail',
                 value: -1,
                 trackId: 200,
                 children: []
@@ -247,18 +276,23 @@ module.exports = {
         {
           url: '/credit/cards/category/:category/page/:page',
           method: METHOD.GET,
-          desc: '获取分类下面的列表数据, /credit/cards/category/:分类名/page/:分页数',
+          desc: '获取分类下面的列表数据, /credit/cards/category/:分类名/page/:分页数，top参数代表要置顶的卡片ID',
+          req: {
+            top: "1,2,3"
+          },
           res: {
             pageIndex: '@integer(0, 2)', // 当前页数,从0开始
-            pageTotal: 0, // 总页数
-            'items|0-2': [ // 每页数量25,前端下拉加载
+            pageTotal: 4, // 总页数
+            'items|3-10': [ // 每页数量25,前端下拉加载
               {
                 image: '@image("200x100", "#50B347", "#FFF", "Credit Card")', // 信用卡图片
-                applyUrl: 'http://@domain()afasf-123-124-12-4-asd', // 申请地址
+                applyUrl: '@pick(["http://millet.net/click-2165238-12627953", "http://track.linkoffers.net/a.aspx"])', // 申请地址
                 ratesFeesUrl: '@url', // Rates & Fees URL
-                highlightName: '@title(2, 6)', // 信用卡顶部红色标注的名称
+                highlightName: '@title(0, 6)', // 信用卡顶部红色标注的名称
                 name: '@title(2, 6)', // 信用卡名称
                 id: '@integer(10000, 99999)', // 信用卡ID
+                bank: -3,
+                issuer: -3,
                 expandBulletPoints: '@boolean', // 是否展开BulletPoints
                 'bulletPoints|3-10': [ // 信用卡介绍
                   '@sentence(5, 15)'
@@ -279,9 +313,9 @@ module.exports = {
           desc: '获取信用卡详情,传入category id和信用卡ID',
           res: {
             image: '@image("200x100", "#50B347", "#FFF", "Credit Card")', // 信用卡图片
-            applyUrl: 'http://@domain()', // 申请地址
+            applyUrl: '@pick(["http://millet.net/click-2165238-12627953", "http://track.linkoffers.net/a.aspx?foid=22984460&fot=9999&foc=305"])', // 申请地址
             ratesFeesUrl: '@url', // Rates & Fees URL
-            highlightName: '@title(2, 6)', // 信用卡顶部红色标注的名称
+            highlightName: '@title(0, 1)', // 信用卡顶部红色标注的名称
             name: '@title(2, 6)', // 信用卡名称
             id: '@integer(10000, 99999)', // 信用卡ID
             'bulletPoints|3-10': [ // 信用卡介绍
@@ -394,7 +428,8 @@ module.exports = {
                 isOnline: '@boolean', // 卡片是否已经上线
                 isRecommend: '@boolean', // 是否在推荐栏中显示
                 lastUpdatedTime: '@datetime()', // 最后更新或抓取时间
-                'categories|2-5': ['@title(1, 2)'] // 所属分类名,在展示所有卡片的时候会用到
+                lastDetailUpdatedTime: '@datetime()', // 详情页最后更新时间
+                'categories|0-20': ['@title(1, 2)'] // 所属分类名,在展示所有卡片的时候会用到
               }
             ]
           }
@@ -405,9 +440,9 @@ module.exports = {
           method: METHOD.GET,
           res: {
             id: '@integer(10000, 99999)', // 卡片id
-
+            isActive: '@boolean', // 卡片是否上线
             isManual: false, // 是否是手动填写
-            grabId: '999', // 如果是自动抓取,传递抓取卡片ID
+            grabId: 123, // 如果是自动抓取,传递抓取卡片ID
 
             name: '@title(2, 5)', // 卡片名称
             image: '@image("200x200", "#50B347", "#FFF", "EDIT IMG")', // 卡片图片
@@ -555,10 +590,11 @@ module.exports = {
           url: '/cms/credit/grabCards',
           desc: '获取所有自动抓取的卡片',
           method: METHOD.GET,
+          delay: 1000,
           res: {
             'items|10': [{
               name: '@title(2, 5)', // 抓取的卡片名称,
-              grabId: '@word' // 抓取卡片id
+              grabId: '@integer(100000, 999999)' // 抓取卡片id
             }]
           }
         },
@@ -566,10 +602,12 @@ module.exports = {
           url: '/cms/credit/refreshGrabCards',
           desc: '更新所有的抓取卡片,如果是GET,获取最后更新时间',
           method: [METHOD.POST, METHOD.GET],
-          delay: 3000,
+          delay: 100,
+          // status: 500,
           res: {
-            'lastUpdatedTime': '@datetime'
-          }
+            'lastUpdatedTime': '2016-08-08 15:72:18'
+          },
+          // res: 'Error!'
         },
 
         {
@@ -634,6 +672,18 @@ module.exports = {
             'briefPoints|3': ['@word'] // 需要展示的briefPoints名称
           },
           res:  {
+            msg: 'update successfully'
+          }
+        },
+
+        {
+          url: "/cms/credit/cardActive/:id",
+          desc: "修改卡片上下线状态",
+          method: METHOD.PUT,
+          req: {
+            isActive: '@boolean' //上线状态
+          },
+          res: {
             msg: 'update successfully'
           }
         },

@@ -15,7 +15,8 @@
     "http-proxy-middleware": "^0.16.0",
     "json2md": "^1.5.2",
     "lodash": "^4.13.1",
-    "mockjs": "^1.0.1-beta2"
+    "mockjs": "^1.0.1-beta2",
+    "url-parse": "^1.1.3"
   },
   "dependencies": {}
 }

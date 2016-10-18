@@ -2,12 +2,15 @@
  * Created by chenzhengguo on 2015/7/30.
  * Updated by chenzhengguo on 2016/1/28.
  * Updated by zhengguo.chen on 2016/6/30.
+ * Updated by zhengguo.chen on 2016/9/18.
  */
 var path = require('path');
 var fs = require('fs');
 var mock = require("mockjs");
 var app = require('express')();
 var proxy = require('express-http-proxy');
+var proxy2 = require('http-proxy-middleware');
+var URL = require('url-parse');
 
 var port = process.argv.slice(2)[0] || 8080;
 
@@ -39,6 +42,29 @@ app.use('/~m/download', (req, res) => {
   res.sendFile(path.join(__dirname, './api.config.js'));
 });
 
+
+// 代理请求
+// see https://github.com/chimurai/http-proxy-middleware
+app.use('/proxy/:url', proxy2({
+  target: 'SET-IN-ROUTER',
+  changeOrigin: true,
+  router: function (req) { 
+    var url = new URL(req.param('url'));
+    return url.origin;
+  },
+  pathRewrite: function (path, req) { 
+    var url = new URL(req.param('url'));
+    console.log(url);
+    return url.pathname;
+  },
+  onProxyRes(proxyRes, req, res) {
+    // 支持跨域
+    proxyRes.headers['Access-Control-Allow-Headers'] = 'x-requested-with, content-type, accept, origin, authorization, x-csrftoken, user-agent, accept-encoding';
+    proxyRes.headers['Access-Control-Allow-Methods'] = 'GET';
+    proxyRes.headers['Access-Control-Allow-Origin'] = '*';
+  }
+}));
+
 // 支持jsonp
 app.set('jsonp callback name', 'callback');
 
@@ -64,7 +90,7 @@ api.groups.forEach(group => {
         res.set('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
         res.set('Access-Control-Allow-Headers', 'x-requested-with, content-type, accept, origin, authorization, x-csrftoken, user-agent, accept-encoding');
         if(req.method !== 'OPTIONS' && (reqData.status && reqData.status !== 200)) {
-          res.sendStatus(reqData.status);
+          res.status(reqData.status).send(reqData.res).end();
         }
         setTimeout(() => res.jsonp(apiRes), reqData.delay || 0);
       });
