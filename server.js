@@ -46,15 +46,16 @@ app.use('/~m/download', (req, res) => {
 // 代理请求
 // see https://github.com/chimurai/http-proxy-middleware
 app.use('/proxy/:url', proxy2({
-  target: 'SET-IN-ROUTER',
+  target: '//',
   changeOrigin: true,
   router: function (req) { 
     var url = new URL(req.param('url'));
+    console.log('[REWRITE ORIGIN]', url.origin);
     return url.origin;
   },
   pathRewrite: function (path, req) { 
     var url = new URL(req.param('url'));
-    console.log(url);
+    console.log('[REWRITE PATH]', url.pathname);
     return url.pathname;
   },
   onProxyRes(proxyRes, req, res) {
