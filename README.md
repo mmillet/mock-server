@@ -4,12 +4,14 @@ A simple mock server of express, front-end develop.
 ## Get Start
 ```
 git clone https://github.com/mmillet/mock-server.git
+npm install pm2 -gd
 npm install
-npm start
+cd mock-server && cp data_template data
+npm start dev
 ```
 
 ## Deploy
 ```
 npm install pm2 -gd
-pm2 start server.js --watch -- 2618
+npm start
 ```

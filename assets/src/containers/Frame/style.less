@@ -1,0 +1,63 @@
+@bgColor: #eee;
+
+
+:global {
+  .page-wrapper {
+
+    height: 100%;
+
+    header {
+      min-width: 1280px;
+      height: 64px;
+      position: relative;
+      padding-left: 30px;
+      background-color: @bgColor;
+
+      .logo {
+        width: 200px;
+        height: 100%;
+        background-size: 70%;
+        display: inline-block;
+      }
+
+      h2 {
+        position: absolute;
+        left: 30px;
+        top: 19px;
+        color: #fff;
+      }
+
+    }
+  }
+
+  .page-content-wrapper {
+    min-width: 960px;
+    position: absolute;
+    top: 78px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    .sidebar {
+      width: 240px;
+      border-right: 1px solid #d2e4f1;
+      position:absolute;
+      left:0;
+      top:0;
+      right:0;
+      bottom:0;
+      height:100%;
+      overflow-y: auto;
+    }
+
+    .page-content {
+      position: absolute;
+      left:240px;
+      right:0;
+      top:0;
+      bottom: 0;
+      padding: 20px;
+      overflow-y: auto;
+    }
+  }
+}

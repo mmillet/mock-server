@@ -1,0 +1,136 @@
+@import '../../../layouts/css/variable.less';
+
+.head {
+  position: relative;
+  .title {
+    margin-right: 160px;
+    margin-bottom: 20px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: relative;
+
+    .name,
+    .desc {
+      font-weight: normal;
+      display: inline-block;
+      border-color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      &:hover {
+        box-shadow: 0 0 0 2px rgba(196, 38, 85, 0.2);
+      }
+    }
+
+
+    ._name,
+    ._desc {
+      visibility: hidden;
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      left: 0;
+    }
+
+    .name {
+      min-width: 20px !important;
+    }
+
+    ._name,
+    .name {
+      font-size: 20px;
+      margin-right: 5px;
+      max-width: 40%;
+    }
+
+    .desc {
+      min-width: 150px !important;
+    }
+
+    ._desc,
+    .desc {
+      font-size: 14px;
+      max-width: 58%;
+    }
+
+    > h1 {
+      font-weight: normal;
+      font-size: 20px;
+      margin-right: 12px;
+      display: inline-block;
+    }
+    //> span {
+    //  display: inline-block;
+    //  font-size: 14px;
+    //  padding: 1px 7px;
+    //  &:hover {
+    //    outline: 1px solid #d9d9d9;
+    //  }
+    //}
+  }
+
+  .control {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
+
+.url {
+  margin-bottom: 10px;
+  :global {
+    .ant-select-selection-selected-value {
+      font-size: 20px;
+      width: 100%;
+      text-align: center;
+      font-weight: bold;
+      color: #777;
+    }
+    .ant-select-lg .ant-select-selection--single {
+      height: 40px;
+    }
+    .ant-select-lg .ant-select-selection__rendered {
+      line-height: 40px;
+    }
+    .ant-input-group-addon {
+      background-color: #fff;
+      border-right: none;
+      padding-left: 10px;
+      padding-right: 0;
+      color: #999;
+      position: relative;
+      z-index: 3;
+    }
+    .disabled .ant-input-group-addon {
+      background-color: @input-disabled-bg;
+    }
+    .ant-input-lg {
+      height: 40px;
+      border-left-color: #fff;
+      padding-left: 0;
+      right: 1px;
+      z-index: 2;
+      &:hover,&:focus {
+        border-color: #d9d9d9;
+        border-left-color: #fff;
+        outline: 0;
+        box-shadow: none;
+      }
+    }
+
+    .ant-btn {
+      height: 40px;
+      width: 100%;
+      .anticon {
+        font-size: 26px;
+        color: #777;
+      }
+      &:hover {
+        .anticon {
+          color: @primary-color;
+        }
+      }
+    }
+
+  }
+}

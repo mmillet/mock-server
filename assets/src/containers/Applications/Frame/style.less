@@ -1,0 +1,48 @@
+@import '../../../layouts/css/variable.less';
+
+
+.appMenu {
+  :global {
+    .ant-menu-item,
+    .ant-menu-submenu-title {
+      .app-control {
+        position: absolute;
+        font-size: 14px;
+        right: 0;
+        top: 5px;
+        padding: 10px 2px;
+        margin-right: 0 !important;
+        display: none;
+        color: @text-color-secondary;
+        &:hover {
+          color: @primary-color;
+          font-weight: bold;
+        }
+      }
+
+      &:hover {
+        .app-control {
+          display: block;
+        }
+      }
+    }
+
+    .ant-menu-item {
+      .app-control {
+        padding: 6px 2px;
+      }
+    }
+  }
+}
+
+
+.addApp {
+  &:hover {
+    background-color: #fff !important;
+    color: @primary-color;
+    font-weight: bold;
+  }
+  padding: 0 !important;
+  text-align: center;
+  color: @text-color-secondary;
+}
