@@ -5,11 +5,11 @@ var SRC_PATH = path.join(__dirname, './assets/src');
 
 // 配置入口
 var entry = {
-  // 通用css
-  common: path.join(SRC_PATH, 'layouts/css/common.less'),
-
-  // 通用三方代码
   vendors: [
+    // css
+    path.join(SRC_PATH, 'layouts/css/common.less'),
+
+    // 通用三方代码
     'react',
     'react-dom',
     'react-redux',
@@ -39,12 +39,11 @@ var htmlWebpackPlugins = [
     inject: true,
     filename: './index.html',
     template: path.join(SRC_PATH, 'index.html'),
-    chunks: ['common', 'vendors', 'index']
+    chunks: ['vendors', 'index', 'manifest']
   })
 ];
 
 module.exports = {
-  vendorVersion: '20161115',
   entry: entry,
   htmlWebpackPlugins: htmlWebpackPlugins
 };

@@ -16,7 +16,7 @@ var Ceiling = React.createClass({
             <ul className="right">
               <li>Dealmoon API Mock Tools</li>
               <li>|</li>
-              <li>Help</li>
+              <li><a href="http://mockjs.com/examples.html" target="_blank">MockJS 示例</a></li>
             </ul>
           </div>
         </div>

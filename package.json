@@ -10,7 +10,7 @@
     "server": "pm2 start pm2.config.js --only MOCK-SERVER",
     "server_dev": "pm2 start pm2.config.js --only MOCK-SERVER-DEV",
     "build": "cross-env  NODE_ENV=production webpack --progress --colors",
-    "start_dev": "webpack-dev-server --inline --hot --host 0.0.0.0 --port 3000 --devtool source-maps --progress --colors --content-base ."
+    "start_dev": "webpack-dev-server --inline --hot --host 0.0.0.0 --port 3001 --devtool source-maps --progress --colors --content-base ."
   },
   "license": "MIT",
   "devDependencies": {
@@ -44,8 +44,7 @@
     "url-loader": "^0.5.7",
     "url-parse": "^1.1.3",
     "webpack": "^1.12.14",
-    "webpack-dev-server": "^1.14.1",
-    "webpack-md5-hash": "0.0.5"
+    "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
     "antd": "2.4.3",
@@ -54,6 +53,7 @@
     "compression": "^1.6.2",
     "echarts": "^3.1.3",
     "es6-promise": "^3.2.1",
+    "express-favicon": "^2.0.0",
     "fs-promise": "^1.0.0",
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.2",

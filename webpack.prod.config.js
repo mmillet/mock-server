@@ -7,7 +7,6 @@ var path = require('path'),
 
 var SRC_PATH = path.join(__dirname, './assets/src'),
     DIST_PATH = path.join(__dirname, './assets/dist'),
-    FILE_HASH_TAG = '_[hash:5]',
     CHUNK_FILE_HASH_TAG = '_[chunkhash:5]';
 
 var config = {
@@ -22,25 +21,23 @@ var config = {
   output: {
     path: DIST_PATH,
     publicPath: '',
-    filename: `js/[name]${FILE_HASH_TAG}.js`,
+    filename: `js/[name]${CHUNK_FILE_HASH_TAG}.js`,
     chunkFilename: `js/[name]${CHUNK_FILE_HASH_TAG}.js`
   },
 
   clearBeforeBuild: true,
 
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin(
-      'vendors',
-      'js/vendors.' + pages.vendorVersion + '.js', // vendor date
-      Infinity
-    ),
+    new webpack.optimize.CommonsChunkPlugin({
+      names: ['vendors', 'manifest'],
+      minChunks: Infinity
+    }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
       '__DEV__': false
     }),
 
-    new ExtractTextPlugin(`css/[name]${FILE_HASH_TAG}.css`, {allChunks: true}),
-    // new ExtractTextPlugin(`css/commons${FILE_HASH_TAG}.css`, {allChunks: true}),
+    new ExtractTextPlugin(`css/[name]${CHUNK_FILE_HASH_TAG}.css`, {allChunks: true}),
 
     new webpack.optimize.UglifyJsPlugin({
       comments: false,
@@ -81,15 +78,6 @@ var config = {
       // css
       {
         test: /\.css$/,
-        include: /src/,
-        loader: ExtractTextPlugin.extract(
-          'style',
-          'postcss!' +
-          'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
-          , {publicPath: '../'})
-      },
-      {
-        test: /\.css$/,
         exclude: /src/,
         loader: 'style!css'
       },
@@ -99,7 +87,7 @@ var config = {
         loader: 'url',
         query: {
           limit: 8192,
-          name: `imgs/[name]${FILE_HASH_TAG}.[ext]`
+          name: `imgs/[name]${CHUNK_FILE_HASH_TAG}.[ext]`
         }
       },
 

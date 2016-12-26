@@ -26,11 +26,10 @@ var config = {
   clearBeforeBuild: false,
 
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin(
-      'vendors',
-      'js/vendors.' + pages.vendorVersion + '.js', // vendor date
-      Infinity
-    ),
+    new webpack.optimize.CommonsChunkPlugin({
+      names: ['vendors', 'manifest'],
+      minChunks: Infinity
+    }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'),
       '__DEV__': true

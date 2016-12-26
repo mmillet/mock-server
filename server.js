@@ -9,6 +9,7 @@
 var path = require('path');
 var fs = require('fs');
 var express = require('express');
+var favicon = require('express-favicon');
 var app = express();
 var bodyParser = require('body-parser');
 
@@ -16,6 +17,8 @@ app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(require('./middlewares/response.middleware')); // support res.success() / res.fail()
 app.use(require('./middlewares/token.middleware')); // support res.success() / res.fail()
+
+app.use(favicon(__dirname + '/assets/favicon.ico', /\/favicon\.ico/));
 
 app.use('/~m', express.static('./assets/dist')); // management static path
 app.use('/~m/setting', require('./routes/setting')); // management setting route

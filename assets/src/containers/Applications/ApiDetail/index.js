@@ -261,7 +261,9 @@ var ApiDetail = React.createClass({
                         theme="github"
                         name="response_ace"
                         tabSize={2}
-                        style={{height: 420}}
+                        height={420}
+                        width={'100%'}
+                        showPrintMargin={false}
                         editorProps={{$blockScrolling: true}}
                         onChange={v => this.onApiChange('response', v)}
                       />
@@ -283,7 +285,9 @@ var ApiDetail = React.createClass({
                       theme="github"
                       name="request_ace"
                       tabSize={2}
-                      style={{height: 420}}
+                      height={420}
+                      width={'100%'}
+                      showPrintMargin={false}
                       editorProps={{$blockScrolling: true}}
                       onChange={v => this.onApiChange('request', v)}
                     />
