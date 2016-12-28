@@ -48,6 +48,7 @@
   },
   "dependencies": {
     "antd": "2.4.3",
+    "basic-auth-connect": "^1.0.0",
     "body-parser": "^1.15.2",
     "classnames": "^2.2.5",
     "compression": "^1.6.2",

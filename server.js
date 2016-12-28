@@ -12,6 +12,7 @@ var express = require('express');
 var favicon = require('express-favicon');
 var app = express();
 var bodyParser = require('body-parser');
+var basicAuth = require('basic-auth-connect');
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
@@ -20,6 +21,17 @@ app.use(require('./middlewares/token.middleware')); // support res.success() / r
 
 app.use(favicon(__dirname + '/assets/favicon.ico', /\/favicon\.ico/));
 
+
+var auth = (req, res, next) => {
+  var settingModel = require('./models/setting');
+  settingModel.get().then(config => {
+    basicAuth(function(user, pass){
+      return config.manageUsername == user && config.managePassword == pass;
+    })(req, res, next)
+  });
+};
+
+app.use('/~m', auth);
 app.use('/~m', express.static('./assets/dist')); // management static path
 app.use('/~m/setting', require('./routes/setting')); // management setting route
 app.use('/~m/app', require('./routes/app')); // management app route
