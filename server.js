@@ -10,10 +10,12 @@ var path = require('path');
 var fs = require('fs');
 var express = require('express');
 var favicon = require('express-favicon');
+var cors = require('cors');
 var app = express();
 var bodyParser = require('body-parser');
 var basicAuth = require('basic-auth-connect');
 
+app.use(cors());
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(require('./middlewares/response.middleware')); // support res.success() / res.fail()
