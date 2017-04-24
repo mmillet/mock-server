@@ -60,22 +60,27 @@ module.exports = (req, res, next) => {
         res.status(api.failStatus || 500).send(`This is a fake server error with ${parseInt(api.failRate)}% rate`);
       } else {
         try {
+          var response;
 
-          var response = {};
+          if(api.response) {
+            // todo security eval
+            try {
+              eval(`response = ${api.response}`);
+            } catch (e) {
+              response = api.response;
+            }
 
-          // todo security eval
-          eval(`response = ${api.response}`);
-
-          if(typeof response === 'object') {
-            response = mock.mock(response);
-            res.status(api.successStatus || 200);
-          } else if(typeof response === 'function') {
-            req.params = lastMathes;
-            response = mock.mock(response(req, res));
+            if(typeof response === 'function') {
+              req.params = lastMathes;
+              response = mock.mock(response(req, res));
+            } else {
+              response = mock.mock(response);
+              res.status(api.successStatus || 200);
+            }
           }
 
           setTimeout(() => {
-            res.jsonp(response);
+            typeof response === 'string' ? res.send(response) : res.jsonp(response);
           }, api.delay);
 
         } catch(e) {
