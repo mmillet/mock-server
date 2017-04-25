@@ -5,6 +5,8 @@
 import React from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {Modal} from 'antd';
+import request, {METHODS} from 'utils/request';
 import appsActions from 'actions/apps';
 import rootActions from 'actions/root';
 
@@ -128,6 +130,46 @@ var ApiDetail = React.createClass({
     });
   },
 
+  onGetRequest(apiPrefix, api) {
+    var {url, request: requestData} = api;
+
+    if(this.hasChanged()) {
+      message.error('Please save api to run test');
+      return ;
+    }
+
+    try {
+      eval(`requestData = ${requestData}`); // todo remove unsafe eval
+    } catch (e) {
+      requestData = null;
+    }
+
+    request(apiPrefix + url, requestData, METHODS[api.method], true, false).then(respPromise => {
+      return respPromise.text().then(resp => {
+        const onRefresh = () => {
+          modal && modal.destroy();
+          this.onGetRequest(apiPrefix, api);
+        };
+
+        var modal = Modal[respPromise.status === 200 ? 'success' : 'error']({
+          width: 750,
+          okText: 'OK',
+          content: <span>
+            <strong>{api.method}</strong> {apiPrefix + url}
+            <strong className="ml10">{respPromise.status} {respPromise.statusText}</strong>
+            <Button className="ml10 mb10" onClick={onRefresh} size="small" shape="circle" type="ghost" icon="reload" />
+            <br/>
+            <div style={{wordBreak: 'break-all'}}
+                 className="text-muted"
+                 dangerouslySetInnerHTML={{__html: resp}}></div>
+          </span>,
+        });
+
+        return resp;
+      });
+    })
+  },
+
   componentDidMount() {
     const {
       params: {appId, apiId, groupId},
@@ -247,9 +289,9 @@ var ApiDetail = React.createClass({
                      value={api.url}/>
             </Col>
             <Col span={2}>
-              <a href={`${appInfo.apiPrefix}${api.url}`} target="_blank" className="ant-btn ant-btn-ghost">
-                <Icon type="arrow-right"/>
-              </a>
+              <Button htmlType="submit" className="ant-btn ant-btn-ghost" onClick={e => this.onGetRequest(appInfo.apiPrefix, api)}>
+                Run Test
+              </Button>
             </Col>
           </Row>
 

@@ -47,7 +47,7 @@ export default handleActions({
 				currentGroupId = `${groupList[groupList.length - 1].id}`;
 			}
 
-			return {...state, currentGroupId, groupList: [{id: '', name: 'All Applications'}, ...action.payload]};
+			return {...state, currentGroupId, groupList: [{id: '', name: '所有项目'}, ...action.payload]};
 		} else {
 			return state;
 		}

@@ -20,9 +20,10 @@ export const METHODS = {
  * @param params
  * @param method
  * @param jsonType 是否为json类型
+ * @param needCheck 是否检查响应
  * @returns {*}
  */
-const request = (url, params, method = METHODS.GET, jsonType = true) => {
+const request = (url, params, method = METHODS.GET, jsonType = true, needCheck = true) => {
 	var options = {
 		headers: {
 			'Content-Type': jsonType ? 'application/json' : 'application/x-www-form-urlencoded'
@@ -35,7 +36,7 @@ const request = (url, params, method = METHODS.GET, jsonType = true) => {
 	} else if (method === METHODS.GET && !isEmpty(params)) {
 		url += ('?' + qs.stringify(params));
 	}
-	return fetch(url, options).then(checkRespStatus);
+	return fetch(url, options).then(needCheck ? checkRespStatus : respPromise => respPromise);
 };
 
 /**
