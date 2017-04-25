@@ -15,7 +15,7 @@ var Ceiling = React.createClass({
           <div className="ant-layout-wrapper">
             <ul className="right">
               <li>Dealmoon API Mock Tools</li>
-              <li>|</li>
+              <li className="ant-layout-ceiling-split">|</li>
               <li><a href="http://mockjs.com/examples.html" target="_blank">MockJS 示例</a></li>
             </ul>
           </div>

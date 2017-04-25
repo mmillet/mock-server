@@ -12,11 +12,12 @@ import 'brace/theme/github';
 
 import {APP_INITIAL_DATA} from 'constants/config';
 
-import {Modal, Tabs, Form, Input, Switch} from "antd";
+import {Modal, Tabs, Form, Input, Switch, Select} from "antd";
+const Option = Select.Option;
 const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
 
-const getInitialAppData = () => APP_INITIAL_DATA;
+const getInitialAppData = currentGroupId => ({...APP_INITIAL_DATA, group: currentGroupId});
 
 
 const formItemLayout = {
@@ -53,8 +54,14 @@ const AppModal = React.createClass({
 
   onValidate() {
     var {appData} = this.state;
+
     var isValid = true;
     var error = {};
+
+    if(appData.group === undefined) {
+      error.group = 'Group should not be null.';
+      isValid = false;
+    }
     if(appData.name == '') {
       error.name = 'Name should not be null.';
       isValid = false;
@@ -68,17 +75,18 @@ const AppModal = React.createClass({
   },
 
   componentWillReceiveProps(nextProps) {
+    var {currentGroupId} = nextProps;
     if(nextProps.visible) {
       this.setState({
         currentTab: '1',
-        appData: nextProps.appData || getInitialAppData(),
+        appData: nextProps.appData || getInitialAppData(currentGroupId),
         error: {}
       });
     }
   },
 
   render() {
-    var {visible, onOk, onCancel} = this.props;
+    var {visible, onOk, onCancel, groupList, currentGroupId} = this.props;
     var {currentTab, appData, error} = this.state;
     return (
       <Modal title={appData.id ? 'Edit Application' : 'Add Application'} visible={visible}
@@ -89,6 +97,29 @@ const AppModal = React.createClass({
         <Tabs activeKey={currentTab} onChange={this.onChangeTab}>
           <TabPane tab="Setting" key="1">
             <Form horizontal>
+
+              <FormItem
+                {...formItemLayout}
+                validateStatus={error.group ? 'error': ''}
+                help={error.group ? error.group: ''}
+                label="Group"
+              >
+                <Select
+                  showSearch
+                  placeholder="Select a group"
+                  optionFilterProp="children"
+                  filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                  value={`${appData.group || currentGroupId}`}
+                  onChange={v => this.onAppChange('group', v)}
+                >
+                  {
+                    groupList.map(group => {
+                      return <Option value={`${group.id}`} key={`${group.id}`}>{group.name}</Option>
+                    })
+                  }
+                </Select>
+              </FormItem>
+
               <FormItem
                 {...formItemLayout}
                 validateStatus={error.name ? 'error': ''}

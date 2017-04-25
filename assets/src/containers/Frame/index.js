@@ -6,14 +6,13 @@ import {Icon, Menu} from "antd";
 import rootActions from "actions/root";
 import PageLoading from "components/PageLoading";
 import Ceiling from "components/Ceiling";
+import GroupsTab from "../Groups/GroupsTab";
 import "./style.less";
 
 var App = React.createClass({
-	
+
 	render() {
 		let {root, children, location} = this.props;
-
-		var level1Path = (location.pathname.match(/^\/[^\/]+/) || [''])[0];
 
 		return (
 			<div className="page-wrapper">
@@ -23,12 +22,7 @@ var App = React.createClass({
 
 				<div className="ant-layout-subheader">
 					<div className="ant-layout-wrapper">
-						<Menu mode="horizontal"
-									onClick={({key}) => hashHistory.push(key)}
-									selectedKeys={[level1Path]}>
-							<Menu.Item key="/apps">Applications</Menu.Item>
-							<Menu.Item key="/settings">Settings</Menu.Item>
-						</Menu>
+						<GroupsTab />
 					</div>
 				</div>
 

@@ -111,7 +111,7 @@ var ApiDetail = React.createClass({
   onGetApi(appId, apiId) {
     this.setState({loading: true});
     const {
-      apps: {apiCollection},
+      apps: {apiCollection, appList, currentGroupId},
       actions: {getApiList, getApi}
     } = this.props;
 
@@ -130,10 +130,15 @@ var ApiDetail = React.createClass({
 
   componentDidMount() {
     const {
-      params: {appId, apiId}
+      params: {appId, apiId, groupId},
+      actions
     } = this.props;
 
     this.onGetApi(appId, apiId);
+
+    if(groupId) {
+      actions.selectGroup(groupId);
+    }
   },
   componentWillReceiveProps(nextProps) {
     const {

@@ -16,6 +16,10 @@ const SubMenu = Menu.SubMenu;
 
 import {API_INITIAL_DATA} from 'constants/config';
 
+const getApiPath = (appId, apiId, groupId) => {
+  return `/apps/${appId}/api/${apiId}${groupId ? '/group/' + groupId: ''}`;
+};
+
 var AppMenu = React.createClass({
 
   getInitialState() {
@@ -62,7 +66,8 @@ var AppMenu = React.createClass({
 
   onAddApi(appData) {
     const {
-      actions: {createApi, getApiList}
+      actions: {createApi, getApiList},
+      apps: {currentGroupId}
     } = this.props;
 
     createApi(
@@ -73,7 +78,7 @@ var AppMenu = React.createClass({
     ).then(res => {
       if(!res.error) {
         getApiList(appData.id);
-        hashHistory.push(`/apps/${appData.id}/api/${res.payload.id}`);
+        hashHistory.push(getApiPath(appData.id, res.payload.id, currentGroupId));
         message.success('Create API successfully.');
       }
     });
@@ -158,14 +163,17 @@ var AppMenu = React.createClass({
 
   render() {
     var {
-      appList, apiCollection,
-      location, params
+      location, params, apps: {appList, apiCollection, groupList, currentGroupId}
     } = this.props;
     var {appModalVisible, currentApp} = this.state;
 
     return (
       <span>
-        <AppModal visible={appModalVisible} onOk={this.onSaveApp} onCancel={this.onCancelApp} appData={currentApp}/>
+        <AppModal visible={appModalVisible}
+                  groupList={groupList} appData={currentApp}
+                  currentGroupId={currentGroupId}
+                  onCancel={this.onCancelApp}
+                  onOk={this.onSaveApp} />
         <Menu className={`w240 ${STYLE.appMenu}`}
               onClick={this.onMenuClick}
               selectedKeys={[location.pathname]}
@@ -176,6 +184,9 @@ var AppMenu = React.createClass({
             appList === undefined ?
               <div className="text-center"><Spin /></div> :
               appList.map(app => {
+                if(currentGroupId && app.group != currentGroupId) {
+                  return null;
+                }
                 const title = (
                   <div>
                     <Badge status={app.enabled ? 'success': 'default'}/>
@@ -194,7 +205,7 @@ var AppMenu = React.createClass({
                         apiCollection[app.id].length ?
                           apiCollection[app.id].map(api => {
                             return (
-                              <Menu.Item key={`/apps/${app.id}/api/${api.id}`}>
+                              <Menu.Item key={getApiPath(app.id, api.id, currentGroupId)}>
                                 <Method type={api.method} disabled={!api.enabled}/>
                                 <span className={api.enabled ? '' : 'text-muted'}>{api.name}</span>
                                 <Dropdown trigger={['click']} overlay={this.getApiMenu(app, api)}>

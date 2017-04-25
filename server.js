@@ -23,7 +23,6 @@ app.use(require('./middlewares/token.middleware')); // support res.success() / r
 
 app.use(favicon(__dirname + '/assets/favicon.ico', /\/favicon\.ico/));
 
-
 var auth = (req, res, next) => {
   var settingModel = require('./models/setting');
   settingModel.get().then(config => {
@@ -36,6 +35,7 @@ var auth = (req, res, next) => {
 app.use('/~m', auth);
 app.use('/~m', express.static('./assets/dist')); // management static path
 app.use('/~m/setting', require('./routes/setting')); // management setting route
+app.use('/~m/group', require('./routes/group')); // management group route
 app.use('/~m/app', require('./routes/app')); // management app route
 app.use('/~m/token', require('./routes/token')); // management token route
 

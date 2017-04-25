@@ -27,6 +27,7 @@ ReactDOM.render(
 				<Route path="apps" component={ApplicationsFrame}>
 					{/*<IndexRedirect to="apps"/>*/}
 					<Route path=":appId/api/:apiId" component={ApiDetail} />
+					<Route path=":appId/api/:apiId/group/:groupId" component={ApiDetail} />
 				</Route>
 
 				{/*信用卡*/}

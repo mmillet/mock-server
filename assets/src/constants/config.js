@@ -1,4 +1,5 @@
 export const APP_INITIAL_DATA = {
+  group: '',
   name: '',
   description: '',
   apiPrefix: '/api',

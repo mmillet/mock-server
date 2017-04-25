@@ -14,8 +14,6 @@ var Frame = React.createClass({
 			actions: {getApiList}
 		} = this.props;
 
-		console.log(keys);
-
 		keys.forEach(key => {
 			if(key !== undefined && apiCollection[key] === undefined) {
 				getApiList(key);
@@ -29,7 +27,6 @@ var Frame = React.createClass({
 
 	render() {
 		const {
-			apps: {appList, apiCollection},
 			children,
 			location, params
 		} = this.props;
@@ -37,7 +34,7 @@ var Frame = React.createClass({
 		return (
 			<div className="page-content-wrapper reset">
 				<div className="sidebar pull-left">
-					<AppMenu params={params} location={location} appList={appList} apiCollection={apiCollection} onGetAppList={this.onGetAppList}/>
+					<AppMenu params={params} location={location} onGetAppList={this.onGetAppList}/>
 				</div>
 				<div className="page-content">
 					{children}

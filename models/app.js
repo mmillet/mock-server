@@ -8,7 +8,7 @@ var path = require('path');
 var _ = require('lodash');
 const CONFIG = require('../server.config');
 
-const APP_VALID_KEYS = ['name', 'description', 'enabled', 'apiPrefix', 'responseTemplate'];
+const APP_VALID_KEYS = ['group', 'name', 'description', 'enabled', 'apiPrefix', 'responseTemplate'];
 const ERROR_APP_NAME_INVALID = 'Name is invalid.';
 const ERROR_APP_NAME_EXIST = 'Name already exists.';
 const ERROR_APP_FOLDER_EXIST = 'Name folder already exists.';
@@ -107,6 +107,7 @@ var appModel = {
       // add data
       var now = Date.now();
       var newApp = Object.assign({
+        group: '',
         id: result.currentId,
         createTimestamp: now,
         modifyTimestamp: now,
