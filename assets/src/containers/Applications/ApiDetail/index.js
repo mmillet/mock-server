@@ -357,8 +357,8 @@ var ApiDetail = React.createClass({
                         {...formItemLayout}
                         label="Http Status"
                       >
-                        <AutoComplete value={api.successStatus} placeholder="Success" onChange={v => this.onApiChange('successStatus', v)} style={{width: 80}} dataSource={HTTP_STATUS} />
-                        <AutoComplete value={api.failStatus} placeholder="Fail" onChange={v => this.onApiChange('failStatus', v)} style={{width: 80, marginLeft: 10}} dataSource={HTTP_STATUS} />
+                        <AutoComplete value={api.successStatus} placeholder="Success" onChange={v => this.onApiChange('successStatus', v)} style={{width: 80, float: 'left'}} dataSource={HTTP_STATUS} />
+                        <AutoComplete value={api.failStatus} placeholder="Fail" onChange={v => this.onApiChange('failStatus', v)} style={{width: 80, marginLeft: 10, float: 'left'}} dataSource={HTTP_STATUS} />
                       </FormItem>
 
                       <FormItem
