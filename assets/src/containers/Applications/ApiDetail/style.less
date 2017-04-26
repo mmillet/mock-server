@@ -78,6 +78,26 @@
 
 .url {
   margin-bottom: 10px;
+  position: relative;
+  .method {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 150px;
+  }
+  .run {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 120px;
+    > button {
+      font-weight: normal;
+    }
+  }
+  .input {
+    padding: 0 130px 0 160px;
+  }
+
   :global {
     .ant-select-selection-selected-value {
       font-size: 20px;
@@ -134,3 +154,4 @@
 
   }
 }
+

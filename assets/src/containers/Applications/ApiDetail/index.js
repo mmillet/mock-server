@@ -42,6 +42,7 @@ const formItemLayout = {
   wrapperCol: { span: 14 },
 };
 
+const ACE_HEIGHT = window.innerHeight - 316;
 
 var ApiDetail = React.createClass({
 
@@ -272,8 +273,8 @@ var ApiDetail = React.createClass({
             </div>
           </div>
 
-          <Row gutter={10} className={STYLE.url}>
-            <Col span={4}>
+          <div className={STYLE.url}>
+            <div className={STYLE.method}>
               <Select size="large" value={api.method} style={{width: '100%'}} onChange={v => this.onApiChange('method', v)}>
                 <Option value="GET">GET</Option>
                 <Option value="POST">POST</Option>
@@ -281,19 +282,19 @@ var ApiDetail = React.createClass({
                 <Option value="DELETE">DELETE</Option>
                 <Option value="ALL">ALL</Option>
               </Select>
-            </Col>
-            <Col span={18}>
+            </div>
+            <div className={STYLE.input}>
               <Input size="large" maxLength={256}
                      onChange={e => this.onApiChange('url', e.target.value)}
                      addonBefore={appInfo.apiPrefix || ' '}
                      value={api.url}/>
-            </Col>
-            <Col span={2}>
-              <Button htmlType="submit" className="ant-btn ant-btn-ghost" onClick={e => this.onGetRequest(appInfo.apiPrefix, api)}>
+            </div>
+            <div className={STYLE.run}>
+              <Button size="large" htmlType="submit" type="ghost" onClick={e => this.onGetRequest(appInfo.apiPrefix, api)}>
                 Run Test
               </Button>
-            </Col>
-          </Row>
+            </div>
+          </div>
 
           <Row gutter={12}>
 
@@ -308,7 +309,7 @@ var ApiDetail = React.createClass({
                         theme="github"
                         name="response_ace"
                         tabSize={2}
-                        height={420}
+                        height={ACE_HEIGHT}
                         width={'100%'}
                         showPrintMargin={false}
                         editorProps={{$blockScrolling: true}}
@@ -332,7 +333,7 @@ var ApiDetail = React.createClass({
                       theme="github"
                       name="request_ace"
                       tabSize={2}
-                      height={420}
+                      height={ACE_HEIGHT}
                       width={'100%'}
                       showPrintMargin={false}
                       editorProps={{$blockScrolling: true}}
