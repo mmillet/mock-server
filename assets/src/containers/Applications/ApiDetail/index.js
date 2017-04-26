@@ -39,7 +39,7 @@ import * as STYLE from './style.less';
 const UPDATE_SUCCESS = 'Update api successfully!';
 const formItemLayout = {
   labelCol: { span: 6 },
-  wrapperCol: { span: 14 },
+  wrapperCol: { span: 16 },
 };
 
 const ACE_HEIGHT = window.innerHeight - 316;
@@ -298,7 +298,7 @@ var ApiDetail = React.createClass({
 
           <Row gutter={12}>
 
-            <Col className="gutter-row" span={12}>
+            <Col className="gutter-row" span={14}>
               <Card>
                 <div className="response">
                   <Tabs defaultActiveKey="1">
@@ -321,7 +321,7 @@ var ApiDetail = React.createClass({
               </Card>
             </Col>
 
-            <Col className="gutter-row" span={12}>
+            <Col className="gutter-row" span={10}>
               <Card>
               <div className="request">
 
@@ -342,28 +342,21 @@ var ApiDetail = React.createClass({
                   </TabPane>
 
                   <TabPane tab="Setting" key="2">
-                    <Form horizontal style={{height: 420}}>
+                    <Form horizontal style={{height: ACE_HEIGHT}}>
                       <FormItem
                         {...formItemLayout}
                         label="Delay"
                       >
-                        <InputNumber value={api.delay} onChange={v => this.onApiChange('delay', v)} style={{width: 78}} min={0} max={100000} step={100}/>
+                        <InputNumber value={api.delay} onChange={v => this.onApiChange('delay', v)} style={{width: 80}} min={0} max={100000} step={100}/>
                         <span className="ant-form-text"> ms (0 ~ 100000)</span>
                       </FormItem>
 
                       <FormItem
                         {...formItemLayout}
-                        label="Success Status"
+                        label="Http Status"
                       >
-                        <AutoComplete value={api.successStatus} onChange={v => this.onApiChange('successStatus', v)} style={{width: 78}} dataSource={HTTP_STATUS} />
-
-                      </FormItem>
-
-                      <FormItem
-                        {...formItemLayout}
-                        label="Fail Status"
-                      >
-                        <AutoComplete value={api.failStatus} onChange={v => this.onApiChange('failStatus', v)} style={{width: 78}} dataSource={HTTP_STATUS} />
+                        <AutoComplete value={api.successStatus} placeholder="Success" onChange={v => this.onApiChange('successStatus', v)} style={{width: 80}} dataSource={HTTP_STATUS} />
+                        <AutoComplete value={api.failStatus} placeholder="Fail" onChange={v => this.onApiChange('failStatus', v)} style={{width: 80, marginLeft: 10}} dataSource={HTTP_STATUS} />
                       </FormItem>
 
                       <FormItem
