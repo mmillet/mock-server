@@ -8,11 +8,11 @@ import isEmpty from 'lodash.isempty';
 const SUCCESS_CODE = 200;
 
 export const METHODS = {
-	GET: 'get',
-	POST: 'post',
-	PUT: 'put',
-	PATCH: 'patch',
-	DELETE: 'delete'
+	GET: 'GET',
+	POST: 'POST',
+	PUT: 'PUT',
+	PATCH: 'PATCH',
+	DELETE: 'DELETE'
 };
 
 /**
