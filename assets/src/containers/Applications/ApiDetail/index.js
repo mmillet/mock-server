@@ -147,6 +147,9 @@ var ApiDetail = React.createClass({
 
     request(apiPrefix + url, requestData, METHODS[api.method], true, false).then(respPromise => {
       return respPromise.text().then(resp => {
+        try {
+          resp = JSON.stringify(JSON.parse(resp), null, 2);
+        } catch (e) {}
         const onRefresh = () => {
           modal && modal.destroy();
           this.onGetRequest(apiPrefix, api);
@@ -160,9 +163,8 @@ var ApiDetail = React.createClass({
             <strong className="ml10">{respPromise.status} {respPromise.statusText}</strong>
             <Button className="ml10 mb10" onClick={onRefresh} size="small" shape="circle" type="ghost" icon="reload" />
             <br/>
-            <div style={{wordBreak: 'break-all'}}
-                 className="text-muted"
-                 dangerouslySetInnerHTML={{__html: resp}}></div>
+            <pre className={STYLE.preview}
+                 dangerouslySetInnerHTML={{__html: resp}}></pre>
           </span>,
         });
 
