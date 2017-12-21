@@ -19,6 +19,7 @@ export const API_INITIAL_DATA = {
   failRate: 0,
   failStatus: 500,
   successStatus: 200,
+  url: '',
   request: "{\n  \n}",
   delay: 0
 };

@@ -35,7 +35,8 @@ const request = (url, params, method = METHODS.GET, jsonType = true, needCheck =
 	if (method !== METHODS.GET && !isEmpty(params)) {
 		options.body = jsonType ? JSON.stringify(params) : qs.stringify(params)
 	} else if (method === METHODS.GET && !isEmpty(params)) {
-		url += ('?' + qs.stringify(params));
+		var queryString = qs.stringify(params);
+		url += queryString ? ((url.indexOf('?') > 0 ? '&' : '?') + queryString) : '';
 	}
 	return fetch(url, options).then(needCheck ? checkRespStatus : respPromise => respPromise);
 };

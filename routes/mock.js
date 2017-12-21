@@ -5,17 +5,11 @@
 
 
 var _ = require('lodash');
-var URL = require('url-parse');
 var mock = require("mockjs");
 var routeMatcher = require("route-matcher").routeMatcher;
 
 var appModel = require('../models/app');
 var apiModel = require('../models/api');
-
-const getMatches = (url, matcher) => {
-  var matches = routeMatcher(matcher);
-  return matches.parse(url);
-};
 
 module.exports = (req, res, next) => {
 
@@ -23,45 +17,59 @@ module.exports = (req, res, next) => {
       originalUrl = req.originalUrl,
       method = req.method;
 
-  var lastMathes = {};
-
   appModel.getAppList().then(appList => {
-    return appList.filter(item => {
-        return item.enabled && path.startsWith(item.apiPrefix);
-      }).map(item => {
-        return apiModel.getApiList(item.id, true).then(apiList => {
-          return _.find(apiList, _api => {
-            if(!_api.enabled) {
+    return appList.filter(app => {
+        return app.enabled && path.startsWith(app.apiPrefix);
+      }).map(app => {
+        return apiModel.getApiList(app.id, true).then(apiList => {
+          return _.map(apiList, api => {
+            if(!api.enabled || (api.method && api.method !== 'ALL' && api.method != method)) {
               return false;
+            } else {
+              var apiUrl = app.apiPrefix + api.url;
+              var params = routeMatcher(apiUrl).parse(path);
+
+              if(!params) {
+                return false;
+              }
+              // compute API match score.
+              // each /\:[^\/]+/ -10
+              // no method -5
+              console.log(api.method);
+              var score = 100 - Object.keys(params).length * 10 - (!api.method || api.method == 'ALL' ? 5 : 0);
+              return Object.assign({}, api, {
+                _appId: app.id,
+                _appName: app.name,
+                _apiPrefix: app.apiPrefix,
+                _score: score,
+                _params: params
+              });
             }
-            if(_api.method && _api.method != method) {
-              return false;
-            }
-            // Match api method url, support
-            // 1. /xxx/:id/yyy [OK]
-            // 2. regex [OK]
-            // _api.isRegexUrl && console.log(path, new RegExp(_api.url).test(path));
-            var matcher = _api.isRegexUrl ? new RegExp(_api.url) : item.apiPrefix + _api.url;
-            lastMathes = getMatches(path, matcher);
-            return lastMathes !== null;
-          });
+          }).filter(item => item !== false);
         })
       });
   }).then(promises => {
     if(!promises.length) {
       throw new Error('Not matched any app');
     }
-    return Promise.race(promises);
-  }).then(api => {
-    console.info('Mock api is matched:', method, originalUrl);
+    return Promise.all(promises);
+  }).then(apiCollections => {
+    // sort by api match score
+    var apis = _.flatten(apiCollections);
+    var api = null;
+    if(req.query.__run_test__ !== undefined) {
+      res.send(_.orderBy(apis, ['_score'], ['desc'])).end();
+      return;
+    } else {
+      api = _.maxBy(apis, '_score');
+    }
+    // console.info('Mock api is matched:', method, originalUrl, api);
     if(api) {
-
       if(api.failRate > 0 && Math.random() * 100 < api.failRate) {
         res.status(api.failStatus || 500).send(`This is a fake server error with ${parseInt(api.failRate)}% rate`);
       } else {
         try {
           var response;
-
           if(api.response) {
             // todo security eval
             try {
@@ -69,9 +77,8 @@ module.exports = (req, res, next) => {
             } catch (e) {
               response = api.response;
             }
-
             if(typeof response === 'function') {
-              req.params = lastMathes;
+              req.params = api._params;
               response = mock.mock(response(req, res));
             } else {
               response = mock.mock(response);

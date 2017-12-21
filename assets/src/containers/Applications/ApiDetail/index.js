@@ -3,6 +3,7 @@
  */
 
 import React from 'react';
+import _ from 'lodash';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Modal} from 'antd';
@@ -12,7 +13,6 @@ import rootActions from 'actions/root';
 
 import brace from 'brace';
 import AceEditor from 'react-ace';
-
 import 'brace/mode/javascript';
 import 'brace/theme/github';
 
@@ -28,7 +28,7 @@ import {
   Spin, Icon, Button, Select, Input,
   Tabs, Form, Switch, InputNumber,
   Slider, AutoComplete, Card, Badge,
-  message
+  message, Alert
 } from 'antd';
 const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
@@ -42,7 +42,7 @@ const formItemLayout = {
   wrapperCol: { span: 16 },
 };
 
-const ACE_HEIGHT = window.innerHeight - 316;
+const getAceHeight = () => window.innerHeight - 316;
 
 var ApiDetail = React.createClass({
 
@@ -50,7 +50,9 @@ var ApiDetail = React.createClass({
     return {
       loading: false,
       api: {},
-      _api: {} // 用于比较
+      _api: {}, // for comparing
+      aceHeight: getAceHeight(),
+      testApis: [] // test conflict apis
     }
   },
 
@@ -80,6 +82,9 @@ var ApiDetail = React.createClass({
           // if name or method changed, refresh api list
           if(modified.method !== undefined || modified.name !== undefined || modified.enabled !== undefined) {
             getApiList(appId);
+            this.checkConflictApi();
+          } else if(modified.url !== undefined) {
+            this.checkConflictApi();
           }
         });
       } else {
@@ -167,10 +172,28 @@ var ApiDetail = React.createClass({
                  dangerouslySetInnerHTML={{__html: resp}}></pre>
           </span>,
         });
+      })
+    });
+  },
 
-        return resp;
-      });
-    })
+  checkConflictApi() {
+    this.setState({testApis: []});
+    // 检查 API
+    setTimeout(() => {
+      const { apps: {appList, appMap}, params: {appId, apiId} } = this.props;
+      const { api } = this.state;
+      const appInfo = (appMap && appMap[appId]) ? appMap[appId] : {};
+      var {url, request: requestData} = api;
+      var apiPrefix = appInfo.apiPrefix;
+      request(apiPrefix + url + '?__run_test__', requestData, METHODS[api.method], true, false)
+        .then(testPromise => {
+          try {
+            if(api.id === this.state.api.id) {
+              testPromise.json().then(testApis => this.setState({testApis}));
+            }
+          } catch(e) {}
+        })
+    }, 1000);
   },
 
   componentDidMount() {
@@ -184,16 +207,28 @@ var ApiDetail = React.createClass({
     if(groupId) {
       actions.selectGroup(groupId);
     }
+
+    this._autoAceHeight = _.debounce(this._autoAceHeight, 500);
+    window.addEventListener('resize', this._autoAceHeight);
   },
+
+  firstChecked: false,
+
   componentWillReceiveProps(nextProps) {
     const {
-      params: {appId, apiId}
+      params: {appId, apiId},
+      apps,
     } = this.props;
     const newParams = nextProps.params;
 
     if(appId != newParams.appId || apiId != newParams.apiId) {
-      console.info('I WILL GET API');
       this.onGetApi(newParams.appId, newParams.apiId);
+      this.checkConflictApi();
+    }
+
+    if(!this.firstChecked && apps != nextProps.apps && nextProps.apps && nextProps.apps.appMap[appId]) {
+      this.firstChecked = true;
+      this.checkConflictApi();
     }
   },
 
@@ -204,6 +239,10 @@ var ApiDetail = React.createClass({
     });
   },
 
+  _autoAceHeight() {
+    this.setState({aceHeight: getAceHeight()});
+  },
+
   render() {
     const {
       apps: {appList, appMap},
@@ -211,8 +250,8 @@ var ApiDetail = React.createClass({
     } = this.props;
     const {
       loading,
-      api,
-      nameWidth, descWidth
+      api, testApis,
+      nameWidth, descWidth, aceHeight
     } = this.state;
     const appInfo = (appMap && appMap[appId]) ? appMap[appId] : {};
 
@@ -241,7 +280,31 @@ var ApiDetail = React.createClass({
 
     return (
       <Spin spinning={loading}>
-        <div className="mb30">
+        <div>
+          {
+            testApis.length > 1 ?
+              <Alert message={
+                <div className={STYLE.warning}>
+                  <h3>There are {testApis.length} API configures may cause conflicts:</h3>
+                  <ul>
+                    {
+                      testApis.map(api => {
+                        var url = `#/apps/${api._appId}/api/${api.id}`;
+                        return <li>
+                          <a href={url}>{api._appName} - {api.name}</a>
+                          &nbsp;&nbsp;|&nbsp;&nbsp;
+                          {METHODS[api.method] || 'ALL'} {api._apiPrefix}{api.url}
+                          &nbsp;&nbsp;|&nbsp;&nbsp;
+                          Match Score: {api._score}
+                        </li>
+                      })
+                    }
+                  </ul>
+                </div>
+
+              } type="warning" closable={false} />
+              : null
+          }
 
           <div className={STYLE.head}>
             <div className={STYLE.title}>
@@ -313,7 +376,7 @@ var ApiDetail = React.createClass({
                         name="response_ace"
                         wrapEnabled={true}
                         tabSize={2}
-                        height={ACE_HEIGHT}
+                        height={aceHeight}
                         width={'100%'}
                         showPrintMargin={false}
                         editorProps={{$blockScrolling: true}}
@@ -338,7 +401,7 @@ var ApiDetail = React.createClass({
                       name="request_ace"
                       wrapEnabled={true}
                       tabSize={2}
-                      height={ACE_HEIGHT}
+                      height={aceHeight}
                       width={'100%'}
                       showPrintMargin={false}
                       editorProps={{$blockScrolling: true}}
@@ -347,7 +410,7 @@ var ApiDetail = React.createClass({
                   </TabPane>
 
                   <TabPane tab="Setting" key="2">
-                    <Form horizontal style={{height: ACE_HEIGHT}}>
+                    <Form horizontal style={{height: aceHeight}}>
                       <FormItem
                         {...formItemLayout}
                         label="Delay"
@@ -370,9 +433,6 @@ var ApiDetail = React.createClass({
                       >
                         <Slider value={api.failRate} onChange={v => this.onApiChange('failRate', v)} marks={rateMarks} defaultValue={0} tipFormatter={v => `${v}%`} />
                       </FormItem>
-
-
-
                     </Form>
                   </TabPane>
 
