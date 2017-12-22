@@ -30,6 +30,7 @@ var AppMenu = React.createClass({
   },
 
   onExpandApp(keys) {
+    console.log(`onExpandApp`, keys);
     this.props.onGetAppList(keys);
   },
 
@@ -119,6 +120,22 @@ var AppMenu = React.createClass({
 
   onMenuClick(item) {
     item.key === 'ADD-APP' ? this.onAddApp() : hashHistory.push(item.key);
+  },
+
+  onMessage(e) {
+    var msg = e.data;
+    if(/^expandApp/.test(msg)) {
+      var appId = msg.split('-').pop();
+      this.onExpandApp([appId]);
+    }
+  },
+
+  componentDidMount() {
+    window.addEventListener('message', this.onMessage);
+  },
+
+  componentWillUnmount() {
+    window.removeEventListener('message', this.onMessage);
   },
 
   getAppMenu(app) {

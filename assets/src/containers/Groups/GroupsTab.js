@@ -7,9 +7,11 @@ import classnames from "classnames";
 import {connect} from "react-redux";
 import {hashHistory} from 'react-router';
 import {bindActionCreators} from "redux";
-import {Icon, Tabs, Spin, Popover, Input, message, Menu, Button, Popconfirm} from "antd";
+import {Icon, Tabs, Spin, Popover, Input, message, Button, Popconfirm} from "antd";
 import appsActions from "actions/apps";
 import STYLE from "./style.less";
+
+import SelectAppAndGroup from './SelectAppAndGroup';
 
 const TabPane = Tabs.TabPane;
 const ButtonGroup = Button.Group;
@@ -43,6 +45,18 @@ var GroupsTab = React.createClass({
 
   onToggleEdit() {
     this.setState({edit: !this.state.edit});
+  },
+
+  onSearchSelect(type, id) {
+    let {actions} = this.props;
+    if(type === 'group') {
+      actions.selectGroup(id);
+    } else if(type === 'app') {
+      actions.selectGroup('');
+      setTimeout(() => {
+        window.postMessage(`expandApp-${id}`, '*');
+      }, 1500);
+    }
   },
 
   onCreateGroup() {
@@ -125,7 +139,9 @@ var GroupsTab = React.createClass({
 
     return (
       <div className={classnames('ant-layout-wrapper', STYLE.menu, {[STYLE.isEdit]: edit})}>
-        <Tabs mode="horizontal"
+        <SelectAppAndGroup onSelect={this.onSearchSelect}/>
+        <Tabs className={STYLE.tabs}
+              mode="horizontal"
               tabBarExtraContent={controls}
               onChange={this.onChange} activeKey={apps.currentGroupId}>
           {

@@ -185,6 +185,11 @@ var ApiDetail = React.createClass({
       const appInfo = (appMap && appMap[appId]) ? appMap[appId] : {};
       var {url, request: requestData} = api;
       var apiPrefix = appInfo.apiPrefix;
+      try {
+        eval(`requestData = ${requestData}`); // todo remove unsafe eval
+      } catch (e) {
+        requestData = null;
+      }
       request(apiPrefix + url + '?__run_test__', requestData, METHODS[api.method], true, false)
         .then(testPromise => {
           try {

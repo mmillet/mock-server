@@ -2,51 +2,112 @@
 
 .menu {
   position: relative;
-  &.isEdit {
-    :global {
-      .ant-tabs-tab {
-        .anticon {
-          display: block;
-        }
-      }
-    }
-  }
+
   :global {
-    .ant-tabs-tab-prev, .ant-tabs-tab-next {
-      line-height: 49px;
-      margin-top: 0;
-    }
-    .ant-tabs-tab {
-      padding: 0 16px;
-      line-height: 49px;
-      margin-right: 0;
-      .anticon {
-        display: none;
-        position: absolute;
-        right: -10px;
-        top: 4px;
-        font-size: 12px;
-        color: @text-color-secondary;
-        &:hover {
-          color: @primary-color;
-        }
-      }
-    }
     .ant-spin {
       position: absolute;
-      top: 14px;
-      left: 20px;
+      left: 280px;
+      top: 12px;
     }
-    .ant-tabs-extra-content {
-      display: block;
-      line-height: 45px;
-      padding: 0 20px;
-      .ant-btn-ghost,
-      .ant-btn-primary {
-        padding: 2px 0 !important;
-        min-width: 32px;
+  }
+
+  &.isEdit {
+    .tabs {
+      :global {
+        .ant-tabs-tab {
+          .anticon {
+            display: block;
+          }
+        }
       }
     }
   }
+  .tabs {
+    margin-left: 250px;
+    :global {
+      .ant-tabs-tab-prev, .ant-tabs-tab-next {
+        line-height: 49px;
+        margin-top: 0;
+      }
+      .ant-tabs-tab {
+        padding: 0 16px;
+        line-height: 49px;
+        margin-right: 0;
+        .anticon {
+          display: none;
+          position: absolute;
+          right: -10px;
+          top: 4px;
+          font-size: 12px;
+          color: @text-color-secondary;
+          &:hover {
+            color: @primary-color;
+          }
+        }
+      }
+      .ant-spin {
+        position: absolute;
+        top: 14px;
+        left: 20px;
+      }
+      .ant-tabs-extra-content {
+        display: block;
+        line-height: 45px;
+        padding: 0 20px;
+        .ant-btn-ghost,
+        .ant-btn-primary {
+          padding: 2px 0 !important;
+          min-width: 32px;
+        }
+      }
+    }
+  }
+
+  .search {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 250px;
+    height: 48px;
+    text-align: center;
+    border-bottom: 1px solid #d9d9d9;
+    border-right: 1px solid #d9d9d9;
+    .searchIcon {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      margin-top: -10px;
+      z-index: 1;
+      font-size: 18px;
+      color: #ccc;
+    }
+    :global {
+      .ant-select {
+        display: block;
+        height: 100%;
+        width: 100%;
+      }
+      .ant-select-selection__placeholder {
+        text-align: left;
+      }
+      .ant-select-lg .ant-select-selection--single {
+        height: 100%;
+        width: 100%;
+        line-height: 48px;
+        border: none;
+        border-radius: 0;
+      }
+      .ant-select-lg .ant-select-selection__rendered {
+        height: 48px;
+        line-height: 48px;
+        margin-left: 16px;
+        margin-right: 32px;
+      }
+      .ant-select-search--inline {
+        width: 100%;
+      }
+    }
+  }
+
 }
 
