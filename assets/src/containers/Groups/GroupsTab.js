@@ -55,7 +55,7 @@ var GroupsTab = React.createClass({
       actions.selectGroup('');
       setTimeout(() => {
         window.postMessage(`expandApp-${id}`, '*');
-      }, 1500);
+      }, 300);
     }
   },
 

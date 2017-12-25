@@ -99,8 +99,12 @@ module.exports = (req, res, next) => {
       throw new Error('Not matched any api');
     }
   }).catch(e => {
-    console.warn(e, method, originalUrl);
-    res.status(500).send(e.message);
+    console.warn(method, originalUrl, e.message);
+    if(method === 'GET' && originalUrl === '/') {
+      res.redirect('/~m');
+    } else {
+      res.status(500).send(e.message);
+    }
     next();
   });
 

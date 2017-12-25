@@ -25,13 +25,18 @@ var AppMenu = React.createClass({
   getInitialState() {
     return {
       appModalVisible: false,
+      expandIds: [],
       currentApp: null
     }
   },
 
-  onExpandApp(keys) {
-    console.log(`onExpandApp`, keys);
+  onExpandApp(keys, needFocus) {
+    this.setState({expandIds: keys});
     this.props.onGetAppList(keys);
+    if(needFocus && keys.length) {
+      var ele = this.refs[`app-menu-${keys[0]}`];
+      ele && ele.scrollIntoView();
+    }
   },
 
   onAddApp() {
@@ -126,11 +131,15 @@ var AppMenu = React.createClass({
     var msg = e.data;
     if(/^expandApp/.test(msg)) {
       var appId = msg.split('-').pop();
-      this.onExpandApp([appId]);
+      this.onExpandApp([appId], true);
     }
   },
 
   componentDidMount() {
+    var {params} = this.props;
+    if(params.appId) {
+      this.setState({expandIds: [params.appId]})
+    }
     window.addEventListener('message', this.onMessage);
   },
 
@@ -180,9 +189,9 @@ var AppMenu = React.createClass({
 
   render() {
     var {
-      location, params, apps: {appList, apiCollection, groupList, currentGroupId}
+      params, apps: {appList, apiCollection, groupList, currentGroupId}
     } = this.props;
-    var {appModalVisible, currentApp} = this.state;
+    var {appModalVisible, currentApp, expandIds} = this.state;
 
     return (
       <span>
@@ -193,8 +202,8 @@ var AppMenu = React.createClass({
                   onOk={this.onSaveApp} />
         <Menu className={`w250 ${STYLE.appMenu}`}
               onClick={this.onMenuClick}
-              selectedKeys={[location.pathname]}
-              defaultOpenKeys={[params.appId]}
+              defaultSelectedKeys={[params.appId]}
+              openKeys={expandIds}
               onOpenChange={this.onExpandApp}
               mode="inline">
           {
@@ -205,7 +214,7 @@ var AppMenu = React.createClass({
                   return null;
                 }
                 const title = (
-                  <div>
+                  <div ref={`app-menu-${app.id}`}>
                     <Badge status={app.enabled ? 'success': 'default'}/>
                     <span className="vertical-middle">{app.name}</span>
                     <Dropdown trigger={['click']} overlay={this.getAppMenu(app)}>
