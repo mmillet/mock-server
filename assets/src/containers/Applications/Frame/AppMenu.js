@@ -34,8 +34,11 @@ var AppMenu = React.createClass({
     this.setState({expandIds: keys});
     this.props.onGetAppList(keys);
     if(needFocus && keys.length) {
-      var ele = this.refs[`app-menu-${keys[0]}`];
-      ele && ele.scrollIntoView();
+      // scrollIntoView after expanded
+      setTimeout(() => {
+        var ele = this.refs[`app-menu-${keys[0]}`];
+        ele && ele.scrollIntoView();
+      }, 500);
     }
   },
 

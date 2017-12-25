@@ -61,7 +61,7 @@ var SelectAppAndGroup = React.createClass({
         onSelect={this.onSelect}
         showArrow={false}
         filterOption={false}
-        notFoundContent={keyword ? 'Not Found' : 'Input some keywords to search'}
+        notFoundContent={keyword ? 'Not Found' : 'Type keywords to search'}
       >
         <OptGroup label="Groups">
           {
