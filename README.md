@@ -15,7 +15,9 @@ git clone https://github.com/mmillet/mock-server.git
 ```
 Then copy data_template to data path and install dependences.
 ```
-cd mock-server && cp data_template data -r && npm run build
+cd mock-server
+cp data_template data -r
+npm install && npm run build
 ```
 Now you can run server like this. You can manage APIs at http://localhost:9999/~m (default auth is: ```user / 123456```).
 ```
@@ -25,7 +27,7 @@ node ./server.js 9999
 ### How to develop me ?
 You can run dev_server (express) and webpack_dev_server (frontend) with this command.
 ```
-npm start dev
+npm run dev
 ```
 
 ## FAQ
