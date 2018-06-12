@@ -25,3 +25,5 @@ export const API_INITIAL_DATA = {
 };
 
 export const HTTP_STATUS = ['200', '201', '301', '302', '304', '401', '404', '500', '502'];
+
+export const API_CURRENT_TAG = '_no_version_';

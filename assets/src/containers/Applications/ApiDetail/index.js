@@ -6,10 +6,12 @@ import React from 'react';
 import _ from 'lodash';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {Modal} from 'antd';
+import {Modal, Popconfirm} from 'antd';
 import request, {METHODS} from 'utils/request';
 import appsActions from 'actions/apps';
 import rootActions from 'actions/root';
+
+import TagModal from '../TagModal';
 
 import brace from 'brace';
 import AceEditor from 'react-ace';
@@ -20,8 +22,7 @@ import isEqual from 'is-equal-shallow';
 
 import {forEach} from 'lodash';
 
-import {HTTP_STATUS} from 'constants/config';
-
+import {HTTP_STATUS, API_CURRENT_TAG} from 'constants/config';
 
 import {
   Row, Col,
@@ -33,6 +34,7 @@ import {
 const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
 const Option = Select.Option;
+const ButtonGroup = Button.Group;
 
 import * as STYLE from './style.less';
 
@@ -52,7 +54,9 @@ var ApiDetail = React.createClass({
       api: {},
       _api: {}, // for comparing
       aceHeight: getAceHeight(),
-      testApis: [] // test conflict apis
+      testApis: [], // test conflict apis
+      showTagModal: false, // show tag modal
+      tags: [], // all api tags
     }
   },
 
@@ -79,6 +83,8 @@ var ApiDetail = React.createClass({
           _api: res.payload
         }, () => {
           message.success(UPDATE_SUCCESS);
+          // update tag list
+          this.onGetTagList();
           // if name or method changed, refresh api list
           if(modified.method !== undefined || modified.name !== undefined || modified.enabled !== undefined) {
             getApiList(appId);
@@ -112,6 +118,20 @@ var ApiDetail = React.createClass({
     });
   },
 
+  onCreateTag() {
+    const {
+      params: {appId, apiId},
+      actions: {createApiTag}
+    } = this.props;
+    
+    createApiTag(appId, apiId).then(res => {
+      if(!res.error) {
+        this.onGetTagList();
+        message.success('Add tag successfully!');
+      }
+    })
+  },
+
   onNameBlur(v) {
     v == '' && this.onApiChange('name', 'API NAME');
   },
@@ -132,6 +152,7 @@ var ApiDetail = React.createClass({
         this.setState({loading: false, api: {}, _api: {}});
       } else {
         this.setState({loading: false, api: res.payload, _api: res.payload}, this._autoInputWidth);
+        this.onGetTagList();
       }
     });
   },
@@ -201,6 +222,21 @@ var ApiDetail = React.createClass({
     }, 1000);
   },
 
+  onShowTagModal() {
+    this.setState({showTagModal: true});
+  },
+
+  onGetTagList() {
+    const {params: {appId, apiId}, actions} = this.props;
+    actions.getApiTagList(appId, apiId).then(res => {
+      var tags = [];
+      if(!res.error) {
+        tags = res.payload;
+      }
+      this.setState({tags});
+    });
+  },
+
   componentDidMount() {
     const {
       params: {appId, apiId, groupId},
@@ -215,6 +251,7 @@ var ApiDetail = React.createClass({
 
     this._autoAceHeight = _.debounce(this._autoAceHeight, 500);
     window.addEventListener('resize', this._autoAceHeight);
+
   },
 
   firstChecked: false,
@@ -256,7 +293,8 @@ var ApiDetail = React.createClass({
     const {
       loading,
       api, testApis,
-      nameWidth, descWidth, aceHeight
+      nameWidth, descWidth, aceHeight,
+      showTagModal, tags,
     } = this.state;
     const appInfo = (appMap && appMap[appId]) ? appMap[appId] : {};
 
@@ -282,6 +320,9 @@ var ApiDetail = React.createClass({
     };
 
     let hasChanged = this.hasChanged();
+
+    var currentTag = tags[0] || API_CURRENT_TAG;
+    var canNewTag = currentTag === API_CURRENT_TAG;
 
     return (
       <Spin spinning={loading}>
@@ -336,6 +377,16 @@ var ApiDetail = React.createClass({
             </div>
 
             <div className={STYLE.control}>
+              <strong className="mr10">
+                <span className="mr10"><Icon type="tag-o" /> {currentTag}</span>
+                <Popconfirm title={<span>Are you sure add a new tag ？<br/>(Tags can be deleted in diff modal)</span>} placement="rightTop"
+                      onConfirm={this.onCreateTag} okText="Yes" cancelText="No">
+                  <a disabled={!canNewTag} className="mr10">New Tag</a>
+                </Popconfirm>
+                <span className="mr10 text-muted">|</span>
+                <a className="mr10" onClick={this.onShowTagModal}>Diff</a>
+              </strong>
+
               <Switch className="mr10" checked={api.enabled} onChange={v => this.onApiChange('enabled', v)}/>
               <Badge dot={hasChanged}>
                 <Button type="ghost" icon="hdd" disabled={!hasChanged} onClick={this.onSave}>Save</Button>
@@ -448,6 +499,17 @@ var ApiDetail = React.createClass({
 
           </Row>
         </div>
+
+        {
+          showTagModal ? 
+            <TagModal 
+              tags={tags}
+              appId={appId}
+              apiId={apiId}
+              onDeleteTag={this.onGetTagList}
+              onCancel={() => this.setState({showTagModal: false})} 
+            /> : null
+        }
       </Spin>
     )
   }

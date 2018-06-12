@@ -3,7 +3,7 @@
  * App model
  */
 
-var fs = require('fs-promise');
+var fs = require('fs-extra');
 var path = require('path');
 var _ = require('lodash');
 const CONFIG = require('../server.config');

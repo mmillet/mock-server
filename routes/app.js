@@ -55,6 +55,28 @@ router.route('/:appId/api/:apiId')
   .delete((req, res) => {
     var deleteApi = () => apiModel.deleteApi(req.params.appId, req.params.apiId);
     res.handleResult(appModel.getApp(req.params.appId).then(deleteApi));
+  });
+
+router.route('/:appId/api/:apiId/tag')
+  // get api tag list 
+  .get((req, res) => {
+    res.handleResult(apiModel.getTagList(req.params.appId, req.params.apiId));
+  })
+  // create api tag
+  .post((req, res) => {
+    res.handleResult(apiModel.createTag(req.params.appId, req.params.apiId));
+  })
+
+router.route('/:appId/api/:apiId/tag/:tag')
+  // delete api tag
+  .delete((req, res) => {
+    res.handleResult(apiModel.deleteTag(req.params.appId, req.params.apiId, req.params.tag));
+  })
+
+router.route('/:appId/api/:apiId/tag-diff')
+  // get api tag diff
+  .get((req, res) => {
+    res.handleResult(apiModel.getTagDiff(req.params.appId, req.params.apiId, req.query.tag, req.query.tagPrev));
   })
 
 module.exports = router;

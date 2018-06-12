@@ -3,7 +3,7 @@
  * Setting model
  */
 
-var fs = require('fs-promise');
+var fs = require('fs-extra');
 var _ = require('lodash');
 const CONFIG = require('../server.config');
 

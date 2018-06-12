@@ -21,4 +21,8 @@ export default {
 	deleteGroup: createAction('DELETE_GROUP', groupId => request(`/~m/group/${groupId}`, null, METHODS.DELETE)),
 	selectGroup: createAction('SELECT_GROUP'),
 
+	getApiTagList: createAction('GET_API_TAG_LIST', (appId, apiId) => request(`/~m/app/${appId}/api/${apiId}/tag`)),
+	createApiTag: createAction('CREATE_API_TAG', (appId, apiId) => request(`/~m/app/${appId}/api/${apiId}/tag`, null, METHODS.POST)),
+	getApiTagDiff: createAction('GET_API_TAG_DIFF', (appId, apiId, query) => request(`/~m/app/${appId}/api/${apiId}/tag-diff`, query)),
+	deleteApiTag: createAction('CREATE_API_TAG', (appId, apiId, tag) => request(`/~m/app/${appId}/api/${apiId}/tag/${tag}`, null, METHODS.DELETE)),
 };

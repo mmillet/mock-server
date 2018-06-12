@@ -160,7 +160,7 @@ var AppMenu = React.createClass({
           <a href="javascript:;" onClick={() => this.onEditApp(app)}><Icon type="edit" /> Edit Application</a>
         </Menu.Item>
         <Menu.Item>
-          <Popconfirm title="Are you sure delete this application?" placement="rightTop"
+          <Popconfirm title="Are you sure to delete this application?" placement="rightTop"
                       onConfirm={() => this.onDeleteApp(app)} okText="Yes" cancelText="No">
             <a href="javascript:;" onClick={e=>e.stopPropagation()}><Icon type="delete" /> Delete Application</a>
           </Popconfirm>
@@ -177,7 +177,7 @@ var AppMenu = React.createClass({
     return (
       <Menu className="ant-dropdown-menu-right">
         <Menu.Item>
-          <Popconfirm title="Are you sure delete this API?" placement="rightTop"
+          <Popconfirm title="Are you sure to delete this API?" placement="rightTop"
                       onConfirm={() => this.onDeleteApi(app, api)} okText="Yes" cancelText="No">
             <a href="javascript:;" onClick={e=>e.stopPropagation()}><Icon type="delete" /> Delete API</a>
           </Popconfirm>

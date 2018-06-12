@@ -128,7 +128,7 @@ var GroupsTab = React.createClass({
     const getGroupName = group => <span className={STYLE.groupName}>
       {group.id !== '' ?
         <a href="javascript:;" onClick={e=>e.stopPropagation()}>
-          <Popconfirm title={<span>Are you sure delete this group ？<br/>(This action will not remove application)</span>} placement="rightTop"
+          <Popconfirm title={<span>Are you sure to delete this group ？<br/>(This action will not remove application)</span>} placement="rightTop"
                       onConfirm={() => this.onDeleteGroup(group.id)} okText="Yes" cancelText="No">
             <Icon type="close-circle-o"/>
           </Popconfirm>
